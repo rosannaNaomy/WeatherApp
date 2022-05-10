@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="toggle_fahrenheit_string">fahrenheit ℉</string>
+    <string name="toggle_celcius_string">celcius ℃</string>
+    <string name="weather_item_date_text"> %1$s %2$d|%3$d </string>
+    <string name="current_weather_date_text">"%1$s %2$s, %3$d  %4$d:%5$s %6$s"</string>
+</resources>
