@@ -20,7 +20,5 @@ object NetworkLayer {
         retrofit.create(WeatherService::class.java)
     }
 
-
     val apiClient = ApiClient(weatherService)
-
 }

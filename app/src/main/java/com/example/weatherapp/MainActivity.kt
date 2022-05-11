@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -50,6 +49,9 @@ class MainActivity : AppCompatActivity() {
         viewEvents()
     }
 
+
+    //<------> Permissions check and Location requests <------->
+
     @SuppressLint("MissingPermission")
     private fun getCurrentLocation() {
         if (checkPermissions()) {
@@ -61,8 +63,7 @@ class MainActivity : AppCompatActivity() {
                     } else {
                         val lat = location.latitude
                         val lon = location.longitude
-                        weatherViewModel.getWeatherFromSearch(lat,lon)
-                        Log.d(MainActivity::class.java.toString(), "location: $lat $lon")
+                        weatherViewModel.getWeather(lat,lon)
                     }
                 }
             } else {
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
     private val locationCallback = object : LocationCallback(){
         override fun onLocationResult(locationResult: LocationResult) {
             val lastLocation: Location = locationResult.lastLocation
-            weatherViewModel.getWeatherFromSearch(lastLocation.latitude, lastLocation.longitude)
+            weatherViewModel.getWeather(lastLocation.latitude, lastLocation.longitude)
         }
     }
 
@@ -137,12 +138,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+    //<------> View events and set up <------->
+
     private fun viewEvents() {
         binding.toggleGroup.addOnButtonCheckedListener { toggleGroup, checkedId, isChecked ->
             if (isChecked) {
                 when (checkedId) {
-                    R.id.toggle_fah_button -> weatherViewModel.toggle(UiConstants.FAHRENHEIT_ID)
-                    R.id.toggle_cel_button -> weatherViewModel.toggle(UiConstants.CELSIUS_ID)
+                    R.id.toggle_fah_button -> weatherViewModel.toggleFC(UiConstants.FAHRENHEIT_ID)
+                    R.id.toggle_cel_button -> weatherViewModel.toggleFC(UiConstants.CELSIUS_ID)
                 }
             }
         }
@@ -192,8 +196,8 @@ class MainActivity : AppCompatActivity() {
             binding.currentLocationNameTextview.text = it
         }
         binding.todayTextview.visibility = View.VISIBLE
-        binding.currentTempTextView.text = weatherViewModel.getFahrenheitCelsius(current)
-        binding.currentDateTextview.text = weatherViewModel.getDate(current.dt)
+        binding.currentDateTextview.text = current.date
+        binding.currentTempTextView.text = weatherViewModel.getFahrenheitCelsius()
         val iconPath = current.weather[0].iconUrl
         Picasso.get().load(iconPath).into(binding.currentWeatherIcon)
     }

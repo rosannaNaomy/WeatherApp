@@ -8,20 +8,21 @@ data class WeatherModel(
     val daily: List<DailyModel>,
     val lat: Double,
     val lon: Double,
-    val timezone: String
+    val timezone: String,
 ) {
     data class CurrentModel(
         val temp: Double,
         val dt: Int,
         val weather: List<WeatherInfoModel>,
-        var toggleId: Int = UiConstants.FAHRENHEIT_ID,
-        var celsius: Double = (temp - 32.0) * 5.0 / 9.0
+        var date: String,
+        var unitId: Int,
+        var celsius: Double
     )
 
     data class TempModel(
         var day: Double,
-        var toggleId: Int = UiConstants.FAHRENHEIT_ID, //2131362283,
-        var celsius: Double = (day - 32.0) * 5.0 / 9.0
+        var unitId: Int,
+        var celsius: Double
     )
 
 }
